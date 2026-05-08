@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <title>ANNA私補資源 | DSE 16篇範文平台（基礎版）</title>
+    <style>
+        *{box-sizing:border-box}
+        body{font-family:-apple-system,"PingFang HK",sans-serif;background:#FCF3D6;margin:0;padding-bottom:50px}
+        header{background:linear-gradient(135deg,#FED5D4 0%,#F5C6C6 100%);padding:30px 20px;text-align:center}
+        header h1{font-size:1.5rem;margin:0;color:#765C55}
+        nav{display:flex;background:#D7ECE5;border-bottom:3px solid #765C55;position:sticky;top:0}
+        nav div{flex:1;text-align:center;padding:14px;cursor:pointer;font-weight:700;color:#765C55}
+        nav div.active{background:#FED5D4;border-bottom:3px solid #765C55;color:#4a3a36}
+        nav div:hover:not(.active){background:#FCF3D6}
+        .container{max-width:700px;margin:20px auto;padding:0 15px}
+        .chapter-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+        .chapter-card{background:#fff;padding:20px 8px;border-radius:28px;text-align:center;cursor:pointer;border:2px solid #FED5D4}
+        .chapter-card:hover{transform:translateY(-3px);border-color:#765C55}
+        .chapter-card h3{margin:0;color:#765C55}
+        .submenu{display:flex;flex-direction:column;gap:15px}
+        .sub-btn{padding:28px;border-radius:50px;text-align:center;font-weight:800;cursor:pointer}
+        .sub-btn.trans{background:#D7ECE5;color:#2c6e5c}
+        .sub-btn.main{background:#FED5D4;color:#a55a4f}
+        .sub-btn.rhet{background:#FCF3D6;color:#b88b4a;border:2px solid #FED5D4}
+        .quiz-box{background:#fff;padding:25px;border-radius:40px}
+        .mistake-item{background:#fff;padding:15px;border-radius:25px;margin-bottom:12px;border-left:8px solid #E07A5F;display:flex;justify-content:space-between}
+        .redo-btn{background:#765C55;color:#fff;border:none;padding:6px 16px;border-radius:40px}
+        .about-grid{display:flex;flex-direction:column;gap:20px}
+        .about-card{background:#fff;border-radius:32px;padding:20px;border:2px solid #FED5D4}
+        .about-card h3{color:#765C55;margin:0 0 12px}
+        .stat-badge{background:#D7ECE5;display:inline-block;padding:4px 12px;border-radius:40px}
+        .fee{background:#D7ECE5;padding:12px;border-radius:28px;text-align:center;margin-top:15px}
+        footer{margin-top:50px;padding:20px;background:#D7ECE5;text-align:center}
+        .page{display:none}
+        .page.active{display:block}
+        .back{color:#765C55;cursor:pointer;margin-bottom:15px;display:inline-block;background:#FCF3D6;padding:5px 15px;border-radius:40px}
+        .q-header{display:flex;justify-content:space-between;margin-bottom:15px}
+        @media (max-width:550px){.chapter-grid{gap:10px}}
+    </style>
+</head>
+<body>
+<header><h1>🎓 ANNA私補資源｜DSE中文16篇範文</h1></header>
+<nav>
+    <div id="nav-home" class="active" onclick="showPage('home')">📚 篇章目錄</div>
+    <div id="nav-mis" onclick="showMistakes()">📋 錯題本</div>
+    <div id="nav-about" onclick="showAbout()">👩‍🏫 關於我</div>
+</nav>
+<div class="container">
+    <div id="page-home" class="page active"><div class="chapter-grid" id="chapter-list"></div></div>
+    <div id="page-sub" class="page"><div class="back" onclick="showPage('home')">← 返回目錄</div><h2 id="sub-title"></h2><div class="submenu"><div class="sub-btn trans" onclick="startQuiz('語譯')">📖 語 譯</div><div class="sub-btn main" onclick="startQuiz('文章大意')">📝 文章大意</div><div class="sub-btn rhet" onclick="startQuiz('修辭手法')">🎨 修辭手法</div></div></div>
+    <div id="page-quiz" class="page"><div class="back" onclick="showPage('sub')">← 放棄練習</div><div class="quiz-box"><div class="q-header"><span id="q-counter"></span><span>✍️ 練習中</span></div><div id="q-text" style="font-weight:600;margin-bottom:20px;"></div><div id="options"></div><div id="anna-box" class="anna-note"><b>📌 Anna 糾錯：</b><span id="anna-text"></span><button onclick="nextQ()" style="margin-top:15px;padding:8px 20px;background:#765C55;color:#fff;border:none;border-radius:40px;cursor:pointer;">下一題 →</button></div></div></div>
+    <div id="page-mistake" class="page"><div class="back" onclick="showPage('home')">← 返回目錄</div><h2>📋 錯題本</h2><div id="mistake-list-container"></div></div>
+    <div id="page-about" class="page">
+        <div class="back" onclick="showPage('home')">← 返回目錄</div>
+        <div class="about-grid">
+            <div class="about-card"><h3>📌 我的背景</h3><p><span class="stat-badge">F6 mock pre: Lv3</span> → <span class="stat-badge">DSE Lv5</span></p><p>✅ SBA閱讀報告滿分<br>✅ 小組討論差一分滿分<br>✅ SBA總分<strong>98/100</strong><br>✅ 閱讀Lv5* 作文Lv4<br>✅ 三個月Lv3→奪星</p></div>
+            <div class="about-card"><h3>📖 教學內容</h3><p><strong>卷一：閱讀</strong><br>✓ 拆題技巧，改善長篇大論不中point<br>✓ 文言文解碼：在看不明文章的情況下，能靠技巧猜出文章內容立意<br>✓ 12篇範文獨家online platform幫你操卷評估弱項<br>✓ 一篇範文有4份額外資料，幫你有效地溫書</p><p><strong>卷二：作文</strong><br>✓ 獨家寫作技巧，無需大量背誦素材<br>✓ 杜絕「流水式」作文<br>✓ 為你量身定制素材<br>✓ 萬能作文深化立意公式，零作文不再成為不確定因素</p></div>
+            <div class="about-card"><h3>⚙️ 教學方式</h3><p>📝 課後作業，下次課前一天提交<br>🎯 確保掌握才下課<br>✏️ <strong>無限改卷服務</strong>：24h內批改<br>💬 <strong>無限次數售後問書服務</strong></p><div class="fee">💰 $200/hr | SBA改文$500/篇</div></div>
+        </div>
+    </div>
+</div>
+<footer><div>WeChat:Septvixxxx | WhatsApp:65443278</div></footer>
+
+<script>
+    // 邀請碼
+    (function(){
+        if(!localStorage.getItem('anna_auth')){
+            let code=prompt("🔐 請輸入邀請碼：");
+            if(code==="annadse12"){
+                localStorage.setItem('anna_auth','true');
+            }else{
+                alert("❌ 邀請碼錯誤");
+                document.body.innerHTML="<h2 style='text-align:center;margin-top:100px'>🔒 未經授權</h2>";
+                throw new Error("invaild");
+            }
+        }
+    })();
+
+    const chapters=["登樓","山居秋暝","月下獨酌","念奴嬌·赤壁懷古","聲聲慢·秋情","青玉案·元夕","魚我所欲也","勸學","論仁論孝論君子","師說","出師表","逍遙遊","六國論","岳陽樓記","廉頗藺相如列傳","始得西山宴遊記"];
+    const authors=["杜甫","王維","李白","蘇軾","李清照","辛棄疾","孟子","荀子","孔子","韓愈","諸葛亮","莊子","蘇洵","范仲淹","司馬遷","柳宗元"];
+
+    // 初始化題庫（空，但至少保證有結構）
+    let db = {};
+    for(let i=0;i<chapters.length;i++) db[chapters[i]]={author:authors[i],items:{"語譯":[],"文章大意":[],"修辭手法":[]}};
+
+    // 為每個類別補一個臨時題目，避免「無題目」提示
+    for(let ch of chapters){
+        for(let cat of ["語譯","文章大意","修辭手法"]){
+            if(db[ch].items[cat].length===0){
+                db[ch].items[cat].push({q: `（示例）${ch}的${cat}題目，請替換為完整數據。`, a: ["A","B","C","D"], c:0, n:"暫無數據"});
+            }
+        }
+    }
+
+    let mistakes = JSON.parse(localStorage.getItem('anna_mis')) || [];
+    function recordMistake(ch,cat,q){ /* 簡化，不影響目錄 */ }
+    function removeMistake(ch,cat,q){}
+    let curCh="",curCat="",curIdx=0,totalQ=0;
+
+    function showPage(p){
+        document.querySelectorAll('.page').forEach(d=>d.classList.remove('active'));
+        document.getElementById('page-'+p).classList.add('active');
+        ['home','mis','about'].forEach(id=>{
+            let el = document.getElementById('nav-'+id);
+            if(el) el.classList.remove('active');
+        });
+        if(p==='home') document.getElementById('nav-home').classList.add('active');
+        else if(p==='mistake') document.getElementById('nav-mis').classList.add('active');
+        else if(p==='about') document.getElementById('nav-about').classList.add('active');
+    }
+    function showMistakes(){ showPage('mistake'); renderMistakeList(); }
+    function showAbout(){ showPage('about'); }
+    function renderMistakeList(){
+        let container = document.getElementById('mistake-list-container');
+        if(container) container.innerHTML = mistakes.length ? mistakes.map(m=>`<div>${m.ch} - ${m.cat}: ${m.q}</div>`).join('') : '<div>暫無錯題</div>';
+    }
+    function startQuiz(cat){
+        curCat=cat; curIdx=0;
+        let arr = db[curCh].items[cat];
+        if(!arr.length){ alert("暫無題目"); return; }
+        totalQ=arr.length; showPage('quiz'); renderQ();
+    }
+    function renderQ(){
+        let q = db[curCh].items[curCat][curIdx];
+        document.getElementById('q-counter').innerText = `${curIdx+1}/${totalQ}`;
+        document.getElementById('q-text').innerText = q.q;
+        let optDiv = document.getElementById('options');
+        optDiv.innerHTML = '';
+        q.a.forEach((txt,i)=>{
+            let btn = document.createElement('button'); btn.className='opt-btn'; btn.innerText=txt;
+            btn.onclick = ()=>{
+                if(i===q.c) btn.classList.add('correct');
+                else btn.classList.add('wrong');
+                setTimeout(()=>{ curIdx++; if(curIdx<totalQ) renderQ(); else alert("完成"); },800);
+            };
+            optDiv.appendChild(btn);
+        });
+    }
+    function nextQ(){}
+    function openSub(name){ curCh=name; document.getElementById('sub-title').innerText=name; showPage('sub'); }
+
+    const listDiv = document.getElementById('chapter-list');
+    if(listDiv){
+        for(let ch of chapters){
+            listDiv.innerHTML += `<div class="chapter-card" onclick="openSub('${ch}')"><h3>${ch}</h3><p>${db[ch].author}</p></div>`;
+        }
+    } else {
+        console.error("找不到 chapter-list 元素");
+    }
+
+    window.showPage=showPage; window.showMistakes=showMistakes; window.startQuiz=startQuiz;
+    window.openSub=openSub; window.nextQ=nextQ; window.showAbout=showAbout;
+</script>
+</body>
+</html>
